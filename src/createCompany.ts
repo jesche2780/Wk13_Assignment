@@ -1,5 +1,7 @@
 import { renderCompanyList } from "./renderCompanyList"
 
+// Created import to import the renderCompanyList function from the renderCompanyList file.
+
 export async function createCompany(event: any, companyInput: HTMLInputElement, symbolInput: HTMLInputElement, companyList: any[]) {
     event.preventDefault()
     const newCompanyData = {
@@ -17,3 +19,5 @@ export async function createCompany(event: any, companyInput: HTMLInputElement, 
     companyList.push(createdCompanyWithId)
     renderCompanyList()
 }
+
+// Used export to allow the createCompany function to be used in another ts file. Added the "event" as well as each of the different inputs being added for this function with their corresponding types.
