@@ -1,0 +1,14 @@
+{
+  "companies": [
+    {
+      "id": "0",
+      "company": "Wal-Mart",
+      "symbol": "wmt"
+    },
+    {
+      "company": "amazon",
+      "symbol": "amzn",
+      "id": "54p5kRk"
+    }
+  ]
+}

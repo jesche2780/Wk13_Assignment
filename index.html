@@ -1,13 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
-  </head>
-  <body>
-    <div id="app"></div>
+    <title>Company and Coordinating Stock Market Symbols</title>
+</head>
+
+<body>
+    <div class="m-3">
+        <h2>List of companies with corresponding stock market symbols.</h2>
+        <form id="company-form">
+            <h4>New Company</h4>
+            <label class="form-label">Company</label>
+            <input id="company-input" type="text" class="form-control" />
+            <label class="form-label">Symbol</label>
+            <input id="symbol-input" type="text" class="form-control" />
+            <button class="btn btn-success mt-3">Create</button>
+        </form>
+        <div id="companies-container" style="padding: 25px;"></div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
-  </body>
+</body>
 </html>
+
+<!-- Setup shell HTML that provides the titles, basic divs, and the starting button and forms that will not change dynamically with the page.--> 

@@ -1,62 +1,57 @@
-// This assignment is a good starting point for a side-project I'm working on for pulling API data to do stock market analysis. This starts the shell setup that I can add multiple companies, which will then
-// allow me to add in later analysis of each of the companies in their own div containers.
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
-// Creating an empty array to create the company list.
-let companyList = []
-
+let companyList: any = []
 
 async function fetchCompanyList() {
-    // Creating the fetch company list to grab the initial list of companies and their symbols in the database, then parsing the data out in the correct format to be readable.
     const response = await fetch("http://localhost:3000/companies")
     const fetchedCompanies = await response.json()
     companyList = fetchedCompanies
     renderCompanyList()
 }
 fetchCompanyList()
-//Then setting off the newly created function to start the fetch process to grab the process the company data.
- 
+
 const companiesContainer = document.getElementById("companies-container")
 function renderCompanyList() {
-    companiesContainer.innerHTML = ""
-    for (let i = 0; i < companyList.length; i++) {
-        const deleteCompany = async () => {
-            await fetch("http://localhost:3000/companies/" + companyList[i].id, {
-                method: "DELETE"
-            })
-            companyList.splice(i, 1)
-            renderCompanyList()
+    if (companiesContainer !== null) {
+        companiesContainer.innerHTML = ""
+        for (let i = 0; i < companyList.length; i++) {
+            const deleteCompany = async () => {
+                await fetch("http://localhost:3000/companies/" + companyList[i].id, { // Added '/' before companyList[i].id
+                    method: "DELETE"
+                })
+                companyList.splice(i, 1)
+                renderCompanyList()
+            }
+            
+            const div = document.createElement("div")
+            div.className = "border bg-light p-3 m-3"
+            div.innerHTML = `
+                <h3>${companyList[i].company}</h3>
+                <p>${companyList[i].symbol}</p>
+                <button class="btn btn-danger">Delete</button>
+            `
+            const button = div.querySelector("button");
+            if (button !== null) {
+                button.addEventListener("click", deleteCompany)
+                companiesContainer.append(div)
+            } else {
+                console.error('Button element not found')
+            }
         }
-// Created companies container variable which gets the element ID from HTML the "companies container" which will then run a function that will render the company list as it currently exists in the json database.
-// It also creates a delete button that will splice the name of the company from the array.
-
-        const div = document.createElement("div")
-        div.className = "border bg-light p-3 m-3"
-        div.innerHTML = `
-            <h3>${companyList[i].company}</h3>
-            <p>${companyList[i].symbol}</p>
-            <button class="btn btn-danger">Delete</button>
-        `
-        div.querySelector("button").addEventListener("click", deleteCompany)
-        companiesContainer.append(div)
+    } else {
+        console.error('Element with id "companies-container" not found')
     }
 }
 
-//Created a div section that will dynamically add a div and the border and delete button after each company is added to the list.
-const companyInput = document.getElementById("company-input")
-const symbolInput = document.getElementById("symbol-input")
+const companyInputElement = document.getElementById("company-input") as HTMLInputElement
+const symbolInputElement = document.getElementById("symbol-input") as HTMLInputElement
 
-// Two variables for input that will get the element of the HTML by the input IDs, this will be used down below.
-
-async function createCompany(event) {
+async function createCompany(event: any, companyInput: HTMLInputElement, symbolInput: HTMLInputElement, companyList: any[]) {
     event.preventDefault()
-// created an async function that will create companies with the input that is put into the forms on the site, with a prevention of reloading the site.
     const newCompanyData = {
         company: companyInput.value,
         symbol: symbolInput.value
     }
-// Give the values that will be added to the database from the input values (currently at the front end.)
-    companyInput.value = ""
-    symbolInput.value = ""
     const response = await fetch("http://localhost:3000/companies", {
         method: "POST",
         headers: {
@@ -69,4 +64,11 @@ async function createCompany(event) {
     renderCompanyList()
 }
 
-// finally, clear the input boxes, then update the backend with the current status by doing a post to the data and stringifying the data so it is input correctly and re-renders the company list.
+const companyFormElement = document.getElementById("company-form") as HTMLFormElement
+
+if (companyFormElement !== null) {
+    companyFormElement.addEventListener("submit", (event) => createCompany(event, companyInputElement, symbolInputElement, companyList))
+} else {
+    console.error('Element with id "company-form" not found')
+}
+
